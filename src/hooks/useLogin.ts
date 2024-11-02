@@ -19,6 +19,7 @@ export const useLogin = () => {
       }&sessionId=${sessionId}`;
       if (checkInTelegramMiniApp()) {
         const WebApp = (window as any).Telegram.WebApp;
+        const loginUrl = `https://t.me/testMagicLink_bot/testmagiclink?startapp=login3rd_${sessionId}`;
         WebApp.openTelegramLink(loginUrl);
       } else {
         window.open(loginUrl, "_blank", "width=600,height=700");
