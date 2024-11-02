@@ -7,7 +7,7 @@ const StorageKey = "magic-link-smart-account-address";
 
 export const useLogin = () => {
   const sessionIdRef = useRef<string>("");
-  const intervalRef = useRef<NodeJS.Timeout | undefined>(undefined);
+  const intervalRef = useRef<number | undefined>(undefined);
   const [smartAccountAddress, setSmartAccountAddress] = useState<string>("");
 
   const login = (chainId?: number) => {
@@ -34,7 +34,7 @@ export const useLogin = () => {
           localStorage.setItem(StorageKey, account);
           resolve(account);
         }
-      }, HUB_INTERVAL);
+      }, HUB_INTERVAL) as unknown as number;
     });
   };
 
