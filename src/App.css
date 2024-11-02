@@ -40,3 +40,12 @@
 .read-the-docs {
   color: #888;
 }
+
+.info {
+  width: 100%;
+  text-align: center;
+  margin: 0 auto;
+  word-wrap: break-word;
+  word-break: break-all;
+  padding: 20px;
+}

@@ -5,12 +5,21 @@ const MagicLink = import.meta.env.VITE_MAGIC_LOGIN_URL; //  "https://magic-test.
 
 const StorageKey = "magic-link-smart-account-address";
 
+export type MagicLinkLoginResult = {
+  smartAccountAddress: string;
+  email: string;
+  nickname: string;
+  picture: string;
+};
+
 export const useLogin = () => {
   const sessionIdRef = useRef<string>("");
   const intervalRef = useRef<number | undefined>(undefined);
   const [smartAccountAddress, setSmartAccountAddress] = useState<string>("");
 
-  const login = (chainId?: number) => {
+  const login = (
+    chainId?: number
+  ): Promise<MagicLinkLoginResult | undefined> => {
     return new Promise((resolve) => {
       const sessionId = generateRandomString(16);
       sessionIdRef.current = sessionId;
@@ -30,10 +39,11 @@ export const useLogin = () => {
         console.log("data: ", data);
         if (data && data.data) {
           clearInterval(Number(intervalRef.current));
-          const account = data.data;
+          const info = JSON.parse(data.data) as MagicLinkLoginResult;
+          const account = info.smartAccountAddress;
           setSmartAccountAddress(account);
           localStorage.setItem(StorageKey, account);
-          resolve(account);
+          resolve(info);
         }
       }, HUB_INTERVAL) as unknown as number;
     });
