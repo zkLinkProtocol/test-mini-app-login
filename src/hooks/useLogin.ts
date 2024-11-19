@@ -1,7 +1,7 @@
 import { checkInTelegramMiniApp, generateRandomString } from "../utils";
 import { getData, HUB_INTERVAL } from "../utils/hub";
 import { useRef, useState, useEffect } from "react";
-const MagicLink = import.meta.env.VITE_MAGIC_LOGIN_URL; //  "https://magic-test.zklink.io/intent/";
+const MagicLink = import.meta.env.VITE_MAGIC_LOGIN_URL; //  "https://magic-test.zklink.io/intent";
 
 const StorageKey = "magic-link-smart-account-address";
 
@@ -23,7 +23,7 @@ export const useLogin = () => {
     return new Promise((resolve) => {
       const sessionId = generateRandomString(16);
       sessionIdRef.current = sessionId;
-      const loginUrl = `${MagicLink}?chainId=${
+      const loginUrl = `${MagicLink}/login3rd?chainId=${
         chainId ?? 42161
       }&sessionId=${sessionId}`;
       if (checkInTelegramMiniApp()) {
@@ -52,6 +52,15 @@ export const useLogin = () => {
   const logout = () => {
     localStorage.removeItem(StorageKey);
     setSmartAccountAddress("");
+    const logoutUrl = `${MagicLink}/logout`;
+    const newWindow = window.open(logoutUrl, "_blank", "width=600,height=700");
+    if (
+      !newWindow ||
+      newWindow.closed ||
+      typeof newWindow.closed === "undefined"
+    ) {
+      alert("To proceed, please allow pop-ups on this browser");
+    }
   };
 
   useEffect(() => {
